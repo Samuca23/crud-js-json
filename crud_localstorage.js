@@ -8,9 +8,12 @@ class CrudLocalStorage {
         var oDivContainer = this.getDivContainer();
         var oDivForm = this.createDiv('form');
         var oInputName = this.createInput('Nome: ', 'name', 'name', 'text');
+        var oInputDateBirth = this.createInput('Data de Nascimento: ', 'dateBirth', 'dateBirth', 'date');
+        var oInputStreet = this.createInput('Rua', '');
 
         oDivContainer.appendChild(oDivForm);
         oDivForm.appendChild(oInputName);
+        oDivForm.appendChild(oInputDateBirth);
     }
 
     createDiv = (sClass = false, sId = false) => {
@@ -49,6 +52,11 @@ class CrudLocalStorage {
 
     getDivContainer = () => {
         return document.getElementById('container');
+    }
+
+    setStyleDivContainer = (oDivForm) => {
+        oDivForm = this.getDivContainer();
+        oDivForm.style.display = 'flex';
     }
 }
 let teste = new CrudLocalStorage();
