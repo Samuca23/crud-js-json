@@ -4,6 +4,18 @@ class CrudLocalStorage {
         this.createLayoutCrud();
     }
 
+    localStorageCountry = () => {
+
+    }
+
+    localStorageState = () => {
+
+    }
+
+    localStorageCity = () => {
+        
+    }
+
     createLayoutCrud = () => {
         var oDivContainer = this.getDivContainer();
         var oDivForm = this.createDiv('form');
