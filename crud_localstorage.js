@@ -1,3 +1,6 @@
+import Element from "./element.js";
+import Principal from "./principal.js";
+
 class CrudLocalStorage {
 
     constructor() {
@@ -5,7 +8,7 @@ class CrudLocalStorage {
     }
 
     localStorageCountry = () => {
-
+        var aCountry = []
     }
 
     localStorageState = () => {
@@ -13,23 +16,29 @@ class CrudLocalStorage {
     }
 
     localStorageCity = () => {
-        
+
     }
 
     createLayoutCrud = () => {
         var oDivContainer = this.getDivContainer();
         var oDivForm = this.createDiv('form');
         var oInputName = this.createInput('Nome: ', 'name', 'name', 'text');
+        // var oInputName = new Element('input', 'class-name', 'id-name', 'text', 'Nome: ');
+
         var oInputDateBirth = this.createInput('Data de Nascimento: ', 'dateBirth', 'dateBirth', 'date');
         var oInputStreet = this.createInput('Rua: ', 'street', 'street', 'text');
         var oInputNumber = this.createInput('Número: ', 'number', 'number', 'number');
 
+        var sTeste = new Element('input', 'teste', 'teste', 'text', 'Teste: ');
+
+        
         /* Montagem do Layout */
         oDivContainer.appendChild(oDivForm);
         oDivForm.appendChild(oInputName);
         oDivForm.appendChild(oInputDateBirth);
         oDivForm.appendChild(oInputStreet);
         oDivForm.appendChild(oInputNumber);
+        sTeste.objectElement.addElement(oDivForm, sTeste.htmlElement);
 
         /* Estilo do Layout */
         this.setStyleDivForm(oDivForm);
@@ -78,4 +87,5 @@ class CrudLocalStorage {
         oDivForm.style.flexDirection = 'column';
     }
 }
-let teste = new CrudLocalStorage();
+
+let crud = new CrudLocalStorage();
