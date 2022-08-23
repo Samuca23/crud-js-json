@@ -1,13 +1,24 @@
 import Principal from "./principal.js";
 
-class Element extends Principal{
+class Element extends Principal {
 
     constructor(sElementType, sClass = false, sId = false, sType = false, sLabel = false) {
         super();
-        switch(sElementType) {
+        switch (sElementType) {
             case 'input':
-                var oElemento = {htmlElement: this.createInput(sLabel, sClass, sId, sType), objectElement: this};
+                var oElemento = {
+                    htmlElement: this.createInput(sLabel, sClass, sId, sType),
+                    objectElement: this
+                };
                 return oElemento;
+            case 'div':
+
+            case 'select':
+
+            case 'option':
+
+            default:
+                console.log('Esse elemento não existe. Verifique a documentação.');
         }
     }
 
@@ -32,6 +43,6 @@ class Element extends Principal{
 
         return newLabel;
     }
-    
+
 }
 export default Element;
