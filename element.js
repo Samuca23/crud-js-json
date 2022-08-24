@@ -6,13 +6,17 @@ class Element extends Principal {
         super();
         switch (sElementType) {
             case 'input':
-                var oElemento = {
+                let oElementoInput = {
                     htmlElement: this.createInput(sLabel, sClass, sId, sType),
                     objectElement: this
                 };
-                return oElemento;
+                return oElementoInput;
             case 'div':
-
+                let oElementoDiv = {
+                    htmlElement: this.createDiv(sClass, sId),
+                    objectElement: this
+                };
+                return oElementoDiv;
             case 'select':
 
             case 'option':
@@ -42,6 +46,14 @@ class Element extends Principal {
         newLabel.innerText = sLabel;
 
         return newLabel;
+    }
+
+    createDiv = (sClass = false, sId = false) => {
+        var newDiv = document.createElement('div');
+        sClass != false ? newDiv.setAttribute('class', sClass) : null;
+        sId != false ? newDiv.setAttribute('id', sId) : null;
+
+        return newDiv;
     }
 
 }
