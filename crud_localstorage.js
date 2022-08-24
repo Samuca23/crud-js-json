@@ -1,5 +1,4 @@
 import Element from "./element.js";
-import Principal from "./principal.js";
 
 class CrudLocalStorage {
 
@@ -7,78 +6,97 @@ class CrudLocalStorage {
         this.createLayoutCrud();
     }
 
-    aDataCrud = () => {
-        let aDados = {
-            "sCountry": [{
-                    "sCountryName": 'Brasil',
+    aDataCrudCountry = () => {
+        let aDado = {
+            "sData": [{
+                    "sName": 'Brasil',
                     "value": 1,
-                    "sState": [{
-                            "sStateName": 'Santa Catarina',
-                            "value": 1,
-                            "sCity": [{
-                                    "sCityName": 'Rio do Sul',
-                                    "value": 1
-                                },
-                                {
-                                    "sCityName": 'Witmarsum',
-                                    "value": 2
-                                },
-                                {
-                                    "sCityName": 'Lontras',
-                                    "value": 3
-                                }
-                            ],
-                        },
-                        {
-                            "sStateName": 'Rio Grande do Sul',
-                            "value": 2,
-                            "sCity": [{
-                                    "sCityName": 'Caxia do Sul',
-                                    "value": 1
-                                },
-                                {
-                                    "sCityName": 'Porto Alegre',
-                                    "value": 2
-                                }
-                            ]
-                        }
-                    ]
+                    "sSigla": 'BR'
                 },
                 {
-                    "sCountryName": 'Estados Unidos',
+                    "sName": 'Estados Unidos',
                     "value": 2,
-                    "sState": [{
-                            "sStateName": 'Texas',
-                            "value": 1,
-                            "sCity": [{
-                                    "sCityName": 'Dallas',
-                                    "value": 1
-                                },
-                                {
-                                    "sCityName": 'Austin',
-                                    "value": 2
-                                }
-                            ]
-                        },
-                        {
-                            "sStateName": 'Nevada',
-                            "value": 2,
-                            "sCity": [{
-                                    "sCityName": 'Las Vegas',
-                                    "value": 1
-                                },
-                                {
-                                    "sCityName": 'Reno',
-                                    "value": 2
-                                }
-                            ]
-                        }
-                    ]
+                    "sSigla": 'USA'
                 }
             ]
         };
 
-        return aDados;
+        return aDado;
+    }
+
+    aDataCrudState = () => {
+        let aDado = {
+            "sData": [{
+                    "sName": 'Santa Catarina',
+                    "value": 1,
+                    "sSigla": 'BR'
+                },
+                {
+                    "sName": 'Rio Grande do Sul',
+                    "value": 2,
+                    "sSigla": 'BR'
+                },
+                {
+                    "sName": 'Texas',
+                    "value": 3,
+                    "sSigla": 'USA'
+                },
+                {
+                    "sName": 'Nevada',
+                    "value": 4,
+                    "sSigla": 'USA'
+                }
+            ]
+        }
+
+        return aDado;
+    }
+
+    aDataCrudCity = () => {
+        let aDado = {
+            "sData": [{
+                "sName": 'Witmarsum',
+                "value": 1,
+                "sSigla": 'SC'
+            },
+            {
+                "sName": 'Rio do Sul',
+                "value": 2,
+                "sSigla": 'SC'
+            },
+            {
+                "sName": 'Caxias do Sul',
+                "value": 3,
+                "sSigla": 'RS'
+            },
+            {
+                "sName": 'Rio Grande do Sul',
+                "value": 4,
+                "sSigla": 'RS'
+            },
+            {
+                "sName": 'Las Vegas',
+                "value": 5,
+                "sSigla": 'NV'
+            },
+            {
+                "sName": 'Reno',
+                "value": 6,
+                "sSigla": 'NV'
+            },
+            {
+                "sName": 'Dallas',
+                "value": 7,
+                "sSigla": 'TX'
+            },
+            {
+                "sName": 'Austin',
+                "value": 8,
+                "sSigla": 'TX'
+            }]
+        }
+
+        return aDado;
     }
 
     createSelectOption = (sClass, aOption) => {
@@ -87,12 +105,14 @@ class CrudLocalStorage {
         var aNewOption = [];
         sClass != false ? newSelect.setAttribute('class', sClass) : null;
 
-        for(var i = 0; i < aOption.sCountry.length; i ++) {
+        this.setSelectPadrao(newSelect);
+        
+        for (var i = 0; i < aOption.sData.length; i++) {
 
             var newOption = document.createElement('option');
-            var currentOption = aOption.sCountry[i];
+            var currentOption = aOption.sData[i];
             newOption.setAttribute('value', currentOption.value);
-            newOption.innerText = currentOption.sCountryName;
+            newOption.innerText = currentOption.sName;
             
             aNewOption.push(newOption);
         }
@@ -100,9 +120,17 @@ class CrudLocalStorage {
         aNewOption.forEach(function (oNewOption) {
             newSelect.appendChild(oNewOption);
         });
-           
-
+        
+        
         return newSelect;
+    }
+
+    setSelectPadrao = (oSelect) => {
+        var newOptionPadrao = document.createElement('option');
+        newOptionPadrao.setAttribute('value', 0);
+        newOptionPadrao.innerText = 'Selecione...';
+    
+        oSelect.appendChild(newOptionPadrao);
     }
 
     createLayoutCrud = () => {
@@ -114,19 +142,23 @@ class CrudLocalStorage {
         var oInputStreet = new Element('input', 'input-group-text class-street', 'id-street', 'text', 'Rua: ');
         var oInputNumber = new Element('input', 'input-group-text class-number', 'id-number', 'number', 'Número: ');
 
-        var oSelectCountry = this.createSelectOption('select-country', this.aDataCrud());
-        var oSelectState = this.createSelectOption('select-state', this.aDataCrud());
-        var oSelectCity = this.createSelectOption('select-city', this.aDataCrud());
+        var oSelectCountry = new Element('select', 'input-group-text class-select-country', 'id-select-country', false, 'País: ', this.aDataCrudCountry());
+        var oSelectState = new Element('select', 'input-group-text class-select-state', 'id-select-state', false, 'Estado: ', this.aDataCrudState());
+        var oSelectCity = new Element('select', 'input-group-text class-select-city', 'id-select-city', false, 'Cidade: ', this.aDataCrudCity());
 
+        
         /* Montagem do Layout */
         oDivForm.objectElement.addElement(oDivContainer, oDivForm.htmlElement);
         oInputName.objectElement.addElement(oDivForm.htmlElement, oInputName.htmlElement);
         oInputDateBirth.objectElement.addElement(oDivForm.htmlElement, oInputDateBirth.htmlElement);
         oInputStreet.objectElement.addElement(oDivForm.htmlElement, oInputStreet.htmlElement);
         oInputNumber.objectElement.addElement(oDivForm.htmlElement, oInputNumber.htmlElement);
-        oDivForm.htmlElement.appendChild(oSelectCountry);
-        oDivForm.htmlElement.appendChild(oSelectState);
-        oDivForm.htmlElement.appendChild(oSelectCity);
+        oSelectCountry.objectElement.addElement(oDivForm.htmlElement, oSelectCountry.htmlElement);
+        oSelectState.objectElement.addElement(oDivForm.htmlElement, oSelectState.htmlElement);
+        oSelectCity.objectElement.addElement(oDivForm.htmlElement, oSelectCity.htmlElement);
+        
+        oSelectState.objectElement.setDisabled(true, oSelectState.htmlElement.id);
+        oSelectCity.objectElement.setDisabled(true, oSelectCity.htmlElement.id);
 
         /* Estilo do Layout */
         this.setStyleDivForm(oDivForm.htmlElement);
