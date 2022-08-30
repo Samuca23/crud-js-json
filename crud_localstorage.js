@@ -124,9 +124,9 @@ class CrudLocalStorage {
         oInputDateBirth.objectElement.addElement(oDivForm.htmlElement, oInputDateBirth.htmlElement);
         oInputStreet.objectElement.addElement(oDivForm.htmlElement, oInputStreet.htmlElement);
         oInputNumber.objectElement.addElement(oDivForm.htmlElement, oInputNumber.htmlElement);
-        // oDivForm.htmlElement.appendChild(oSelectCountry);
-        // oDivForm.htmlElement.appendChild(oSelectState);
-        // oDivForm.htmlElement.appendChild(oSelectCity);
+        oDivForm.htmlElement.appendChild(oSelectCountry);
+        oDivForm.htmlElement.appendChild(oSelectState);
+        oDivForm.htmlElement.appendChild(oSelectCity);
         oDivForm.htmlElement.appendChild(oButtonCadastro);
         oDivForm.htmlElement.appendChild(oButtonListar);
         /* Estilo do Layout */
