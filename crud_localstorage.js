@@ -211,10 +211,15 @@ class CrudLocalStorage {
                     var sRua = oLocal[0].rua;
                     var iNumero = oLocal[0].numero;
 
+                    var newTable = document.createElement('table');
+                    var newTr = document.createElement('tr');
+
+                    newTable.appendChild(newTr);
                     var newSpan = document.createElement('span');
                     newSpan.innerText = " Nome: " + sName + " Data de Nascimento: " + sData + " Rua: " + sRua + " Número: " + iNumero;
+                    newTr.appendChild(newSpan);
 
-                    body.appendChild(newSpan);
+                    body.appendChild(newTr);
 
                 }
 
