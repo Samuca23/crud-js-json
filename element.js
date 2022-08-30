@@ -41,7 +41,7 @@ class Element extends Principal {
 
     createLabel = (sLabel, sFor) => {
         var newLabel = document.createElement('label');
-        newLabel.setAttribute('id', sFor);
+        newLabel.setAttribute('for', sFor);
         newLabel.innerText = sLabel;
 
         return newLabel;
@@ -53,6 +53,36 @@ class Element extends Principal {
         sId != false ? newDiv.setAttribute('id', sId) : null;
 
         return newDiv;
+    }
+
+    createSelectOption = (sClass, sId, sLabel, aOption) => {
+        var oLabel = this.createLabel(sLabel, sId);
+        var newSelect = document.createElement('select');
+
+        var aNewOption = [];
+        sClass != false ? newSelect.setAttribute('class', sClass) : null;
+        sClass != false ? newSelect.setAttribute('id', sId) : null;
+
+        this.setSelectPadrao(newSelect);
+
+        for (var i = 0; i < aOption.sData.length; i++) {
+
+            var newOption = document.createElement('option');
+            var currentOption = aOption.sData[i];
+            newOption.setAttribute('value', currentOption.value);
+            newOption.innerText = currentOption.sName;
+
+            aNewOption.push(newOption);
+        }
+
+        aNewOption.forEach(function (oNewOption) {
+            newSelect.appendChild(oNewOption);
+        });
+
+        oLabel.innerText = sLabel;
+        oLabel.setAttribute('for', sId);
+
+        return newSelect;
     }
 
     setSelectPadrao = (oSelect) => {

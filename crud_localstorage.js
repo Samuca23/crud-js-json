@@ -91,32 +91,6 @@ class CrudLocalStorage {
         return aDado;
     }
 
-    createSelectOption = (sClass, aOption) => {
-        var newSelect = document.createElement('select');
-
-        var aNewOption = [];
-        sClass != false ? newSelect.setAttribute('class', sClass) : null;
-
-        this.setSelectPadrao(newSelect);
-
-        for (var i = 0; i < aOption.sData.length; i++) {
-
-            var newOption = document.createElement('option');
-            var currentOption = aOption.sData[i];
-            newOption.setAttribute('value', currentOption.value);
-            newOption.innerText = currentOption.sName;
-
-            aNewOption.push(newOption);
-        }
-
-        aNewOption.forEach(function (oNewOption) {
-            newSelect.appendChild(oNewOption);
-        });
-
-
-        return newSelect;
-    }
-
     setSelectPadrao = (oSelect) => {
         var newOptionPadrao = document.createElement('option');
         newOptionPadrao.setAttribute('value', 0);
@@ -141,18 +115,112 @@ class CrudLocalStorage {
         var oSelectState = this.createSelect('estado', false, 'estado');
         var oSelectCity = this.createSelect('cidade', false, 'cidade');
 
+        var oButtonCadastro = this.createButtonCadastro();
+        var oButtonListar = this.createButtonListar();
+
         /* Montagem do Layout */
         oDivForm.objectElement.addElement(oDivContainer, oDivForm.htmlElement);
         oInputName.objectElement.addElement(oDivForm.htmlElement, oInputName.htmlElement);
         oInputDateBirth.objectElement.addElement(oDivForm.htmlElement, oInputDateBirth.htmlElement);
         oInputStreet.objectElement.addElement(oDivForm.htmlElement, oInputStreet.htmlElement);
         oInputNumber.objectElement.addElement(oDivForm.htmlElement, oInputNumber.htmlElement);
-        oDivForm.htmlElement.appendChild(oSelectCountry);
-        oDivForm.htmlElement.appendChild(oSelectState);
-        oDivForm.htmlElement.appendChild(oSelectCity);
-
+        // oDivForm.htmlElement.appendChild(oSelectCountry);
+        // oDivForm.htmlElement.appendChild(oSelectState);
+        // oDivForm.htmlElement.appendChild(oSelectCity);
+        oDivForm.htmlElement.appendChild(oButtonCadastro);
+        oDivForm.htmlElement.appendChild(oButtonListar);
         /* Estilo do Layout */
         this.setStyleDivForm(oDivForm.htmlElement);
+    }
+
+    /**
+     * Button de cadastrar
+     * 
+     * @returns 
+     */
+    createButtonCadastro = () => {
+        var newButton = document.createElement('button');
+        newButton.innerText = 'Cadastrar';
+        newButton.setAttribute('class', 'btn btn-success');
+
+        newButton.addEventListener('click', function () {
+            var oNome = document.getElementById('id-name');
+            var oDataNascimento = document.getElementById('id-dateBirth');
+            var oRua = document.getElementById('id-street');
+            var oNumero = document.getElementById('id-number');
+
+            var sNome = oNome.value;
+            var sDataNascimento = oDataNascimento.value;
+            var sRua = oRua.value;
+            var iNumero = oNumero.value;
+
+            /* Verifica se realmente tem valor nos campos */
+            if (sNome && sDataNascimento && sRua && iNumero) {
+                let aDado = [{
+                    "name": sNome,
+                    "date": sDataNascimento,
+                    "rua": sRua,
+                    "numero": iNumero,
+                    "pais": null,
+                    "estado": null,
+                    "cidade": null
+                }];
+
+
+                /* Gera um ID aleatório */
+                let iRandom = localStorage.length;
+
+                if (localStorage.getItem(iRandom)) {
+                    iRandom = iRandom + 1;
+                } else {
+                    localStorage.setItem(iRandom, JSON.stringify(aDado));
+                }
+
+            } else {
+                alert('Verifique os dados do cadastro!');
+            }
+
+            /* Limpa os campos */
+            [oNome, oDataNascimento, oRua, oNumero].forEach(function(oCampo) {
+                oCampo.value = '';
+            });
+
+        });
+
+        return newButton;
+    }
+
+    /**
+     * Button de Listar
+     * @returns 
+     */
+    createButtonListar = () => {
+        var newButton = document.createElement('button');
+        newButton.innerText = 'Listar';
+        newButton.setAttribute('class', 'btn btn-info');
+
+        newButton.addEventListener('click', function () {
+            if (localStorage.length) {
+                let body = document.body;
+                body.innerHTML = '';
+
+                for (var i = 0; i < localStorage.length; i++) {
+                    var oLocal = JSON.parse(localStorage.getItem(i));
+                    var sName = oLocal[0].name;
+                    var sData = oLocal[0].date;
+                    var sRua = oLocal[0].rua;
+                    var iNumero = oLocal[0].numero;
+
+                    body.innerText = 'Nome:' + sName;
+                }
+
+            } else {
+                alert('Não existe cadastros!');
+            }
+
+        });
+
+        return newButton;
     }
 
     createSelect = (sName, xValueOption = false, sId) => {
@@ -179,13 +247,15 @@ class CrudLocalStorage {
             var newOption = document.createElement('option');
             newOption.setAttribute('value', xValue.sData[i].sSigla);
             newOption.innerText = xValue.sData[i].sName;
-            
+
             newOption.addEventListener('click', function () {
                 let aDadoState = JSON.parse(localStorage.getItem('aCity'));
                 let oSelectState = document.getElementById('estado');
 
-                for (var iOption = 0; iOption <= oSelectState.options.length; iOption++) {
-                    oSelectState.options[iOption] = null;
+                for (var iOption = 0; iOption <= oSelectState.children.length; iOption++) {
+                    if (oSelectState.children[iOption]) {
+                        oSelectState.removeChild(oSelectState.children[iOption]);
+                    }
                 }
 
                 if (oSelectState.options.length == 0) {
